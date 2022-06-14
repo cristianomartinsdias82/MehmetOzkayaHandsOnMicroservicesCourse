@@ -1,0 +1,9 @@
+Catalog.API
+ -> MongoDB.Driver (MongoDb interaction purposes)
+    Via CLI prompt command:
+	  dotnet add package MongoDB.Driver
+	Via Package Manager Console:
+	  Install-package MongoDB.Driver
+ 
+ -> Swashbuckle.AspNetCore (Swagger tools)
+    Already referenced in Asp.Net Core Web Api Template

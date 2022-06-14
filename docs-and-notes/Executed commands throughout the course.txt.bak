@@ -1,0 +1,28 @@
+Executed commands stack (the oldest commands are at the bottom and then it goes coming up)
+
+#6 EXTRA:Get further infrastructure details about the running container, here's the command
+docker inspect shoppong-mongo
+
+#5 MongoDB Compass connection string:
+	mongodb://localhost:27017/CatalogDb?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false
+
+#4 Mongo CLI commands
+   ls (directory navigation command)
+   mongo (starts mongo shell for mongo-specific commands)
+	 use CatalogDb => creates a new database called CatalogDb
+	 show dbs => displays all currently available databases
+	 db.createCollection('Products') => (creates a new collection called 'Products' inside CatalogDb database
+	 show collections => displays all collections databases inside CatalogDb database. (If nothing is displayed, try 'use CatalogDb' [ENTER] then try again)
+	 db.Products.insertMany([{ "A": 1, "B":2, "N": 1000" }]) => inserts N documents into Products collection at once
+	 db.Products.find({}).pretty() => lists documents from Products collection (note that no filters were applied)
+	 db.Products.remove({}) => removes all documents from the Products collection (note that no filters were applied)
+
+#3 Navigate to container's /bin/bash folder in an interactive mode (so you can execute some mongo CLI commands in it)
+docker exec -it shopping-mongo /bin/bash
+
+#2 Get Mongo database logs
+docker logs -f shopping-mongo
+
+#1 Run a Mongo database in docker container
+docker run -d -p 27017:27017 --name shopping-mongo mongo
+
