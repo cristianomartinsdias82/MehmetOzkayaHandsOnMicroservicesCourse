@@ -16,13 +16,13 @@ namespace Catalog.API.Settings
             BsonSerializer.RegisterSerializer(new DateTimeOffsetSerializer(BsonType.String));
 
             services.AddSingleton(configuration.GetSection(nameof(DatabaseSettings)).Get<DatabaseSettings>());
+            services.AddScoped<ICatalogContext, CatalogContext>();
 
             return services;
         }
 
-        public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddRepositories(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddScoped<ICatalogContext, CatalogContext>();
             services.AddScoped<IProductRepository, ProductRepository>();
 
             return services;

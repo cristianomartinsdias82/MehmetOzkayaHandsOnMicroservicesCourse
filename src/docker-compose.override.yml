@@ -1,0 +1,20 @@
+version: '3.4'
+
+services:
+  handsoncatalog.db:
+   container_name: handsoncatalogdb
+   restart: always
+   ports:
+     - "27017:27017"
+   volumes:
+     - mongo_data:/data/db #note that it references mongo_data declared in docker_compose.yml file (volume section)
+
+  catalog.api:
+    container_name: handsoncatalogapi
+    depends_on:
+      - handsoncatalog.db
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "DatabaseSettings:ConnectionString=mongodb://handsoncatalogdb:27017" #note that it uses the "handsoncatalogdb" container_name value!
+    ports:
+      - "8000:80" #"EXTERNAL PORT : INTERNAL PORT"

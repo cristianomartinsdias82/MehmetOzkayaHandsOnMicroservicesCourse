@@ -1,10 +1,8 @@
 ﻿using Catalog.API.Entities;
 using Catalog.API.Repositories;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Net.Mime;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,7 +12,6 @@ namespace Catalog.API.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]")]
-    [Produces(MediaTypeNames.Application.Json)]
     public class CatalogController : ControllerBase
     {
         private readonly IProductRepository _productRepository;
@@ -34,11 +31,10 @@ namespace Catalog.API.Controllers
             {
                 if (_logger.IsEnabled(LogLevel.Information))
                     _logger.LogInformation(info, args);
-            });            
+            });
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<Product>), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get(CancellationToken cancellationToken)
         {
             LogInfo("Get method invoked. Url: {url}", ControllerContext.RouteData.Values["action"]);
@@ -46,9 +42,7 @@ namespace Catalog.API.Controllers
             return Ok(await _productRepository.GetAll(cancellationToken));
         }
 
-        [HttpGet("{id:Guid}", Name = nameof(GetById))]
-        [ProducesResponseType(typeof(Product), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpGet("{id:Guid}")]
         public async Task<IActionResult> GetById(Guid id, CancellationToken cancellationToken)
         {
             LogInfo("GetById method invoked...");
@@ -58,8 +52,6 @@ namespace Catalog.API.Controllers
 
 
         [HttpGet("get-by-title/{title}")]
-        [ProducesResponseType(typeof(IEnumerable<Product>), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetByTitle(string title, CancellationToken cancellationToken)
         {
             LogInfo("GetByTitle method invoked...");
@@ -68,8 +60,6 @@ namespace Catalog.API.Controllers
         }
 
         [HttpGet("get-by-category/{category}")]
-        [ProducesResponseType(typeof(IEnumerable<Product>), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetByCategory(string category, CancellationToken cancellationToken)
         {
             LogInfo("GetByCategory method invoked...");
@@ -78,22 +68,17 @@ namespace Catalog.API.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(Product), StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Post(Product product, CancellationToken cancellationToken)
+        public async Task<IActionResult> Post([FromBody]Product product, CancellationToken cancellationToken)
         {
             LogInfo("Post method invoked...");
 
             await _productRepository.Create(product, cancellationToken);
 
-            //return Ok(await _productRepository.Create(product, cancellationToken));
-            return CreatedAtRoute(nameof(GetById), new { id = Guid.NewGuid() }, new Product());
+            return Ok(new { product, successful = true });
         }
 
         [HttpPut]
-        [ProducesResponseType(typeof(Product), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Put(Product product, CancellationToken cancellationToken)
+        public async Task<IActionResult> Put([FromBody]Product product, CancellationToken cancellationToken)
         {
             LogInfo("Update method invoked...");
 
@@ -101,8 +86,6 @@ namespace Catalog.API.Controllers
         }
 
         [HttpDelete("{id:Guid}")]
-        [ProducesResponseType(typeof(bool), StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
         {
             LogInfo("Delete method invoked...");

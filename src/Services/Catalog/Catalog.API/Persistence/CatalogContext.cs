@@ -13,7 +13,7 @@ namespace Catalog.API.Persistence
             Products = client.GetDatabase(databaseSettings.DatabaseName)
                                        .GetCollection<Product>(databaseSettings.CollectionName);
 
-            CatalogDataSeed.Seed(this); //TODO: Move this to Program.cs
+            CatalogDataSeed.Seed(this);
         }
 
         public IMongoCollection<Product> Products { get; }

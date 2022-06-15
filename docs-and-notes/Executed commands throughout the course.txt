@@ -1,7 +1,15 @@
 Executed commands stack (the oldest commands are at the bottom and then it goes coming up)
 
-#6 (Docker-related) EXTRA: Get further infrastructure details about the running container, here's the command
-docker inspect shoppong-mongo
+#8 (Docker-related) Use this command to (re)start a docker container:
+docker ps -a 
+(and with the container ID, use this command:
+docker start 1234a [i.e. the containerID]
+
+#7 (Catalog.API-related -> Package Manager Console window)
+Update-Package -ProjectName Catalog.API
+
+#6 (Docker-related) EXTRA: Get further infrastructure details about the running container. Here's the command:
+docker inspect shopping-mongo
 
 #5 (MongoDb-related) MongoDB Compass connection string:
 	mongodb://localhost:27017/CatalogDb?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false
@@ -17,7 +25,7 @@ docker inspect shoppong-mongo
 	 db.Products.find({}).pretty() => lists documents from Products collection (note that no filters were applied)
 	 db.Products.remove({}) => removes all documents from the Products collection (note that no filters were applied)
 
-#3 (Docker-related) Navigate to container's /bin/bash folder in an interactive mode (so you can execute some mongo CLI commands in it)
+#3 (Docker-related) Navigate to container's /bin/bash folder in an interactive mode (so you can execute some mongo CLI commands in it, for instance)
 docker exec -it shopping-mongo /bin/bash
 
 #2 (Docker-related) Get Mongo database logs
@@ -26,3 +34,5 @@ docker logs -f shopping-mongo
 #1 (Docker-related) Run a Mongo database in docker container
 docker run -d -p 27017:27017 --name shopping-mongo mongo
 
+	You can also specify a volume in which the data will be saved so you can rerun this container without losing its data:
+	docker run -d -p 27017:27017 --name shopping-mongo -v /mongodb/data/db mongo (Reference: hub.docker.com/_/mongo/)

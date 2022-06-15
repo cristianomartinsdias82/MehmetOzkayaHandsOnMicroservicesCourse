@@ -26,7 +26,7 @@ namespace Catalog.API.Repositories
 
         public async Task<IEnumerable<Product>> GetByCategory(string category, CancellationToken cancellation = default)
         {
-            var filter = Builders<Product>.Filter.Eq(p => p.Category, category);
+            var filter = Builders<Product>.Filter.Regex(x => x.Category, new BsonRegularExpression(category, "i"));
 
             return await _catalogContext.Products.Find(filter)
                                                  .ToListAsync(cancellation);
@@ -40,7 +40,7 @@ namespace Catalog.API.Repositories
 
         public async Task<IEnumerable<Product>> GetByTitle(string title, CancellationToken cancellation = default)
         {
-            var filter = Builders<Product>.Filter.Eq(p => p.Title, title);
+            var filter = Builders<Product>.Filter.Regex(x => x.Title, new BsonRegularExpression(title, "i"));
 
             return await _catalogContext.Products.Find(filter)
                                                  .ToListAsync(cancellation);
