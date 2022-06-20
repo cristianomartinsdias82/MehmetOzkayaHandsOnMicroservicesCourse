@@ -25,15 +25,6 @@ namespace Catalog.API.Controllers
             _logger = logger ?? throw NullArgumentException(nameof(logger));
         }
 
-        private void LogInfo(string info, params object[] args)
-        {
-            Task.Run(() =>
-            {
-                if (_logger.IsEnabled(LogLevel.Information))
-                    _logger.LogInformation(info, args);
-            });
-        }
-
         [HttpGet]
         public async Task<IActionResult> Get(CancellationToken cancellationToken)
         {
@@ -91,6 +82,15 @@ namespace Catalog.API.Controllers
             LogInfo("Delete method invoked...");
 
             return Ok(await _productRepository.Delete(id, cancellationToken));
+        }
+
+        private void LogInfo(string info, params object[] args)
+        {
+            Task.Run(() =>
+            {
+                if (_logger.IsEnabled(LogLevel.Information))
+                    _logger.LogInformation(info, args);
+            });
         }
     }
 }

@@ -7,3 +7,19 @@ Catalog.API
  
  -> Swashbuckle.AspNetCore (Swagger tools)
     Already referenced in Asp.Net Core Web Api Template
+
+Basket.API
+ -> Swashbuckle.AspNetCore (Swagger tools)
+    Already referenced in Asp.Net Core Web Api Template
+
+ -> Microsoft.Extensions.Caching.StackExchangeRedis (Redis interaction purposes)
+    Via CLI prompt command:
+	  dotnet add package Microsoft.Extensions.Caching.StackExchangeRedis
+	Via Package Manager Console:
+	  Install-package Microsoft.Extensions.Caching.StackExchangeRedis
+
+ -> NewtonSoft.Json
+    Via CLI prompt command:
+	  dotnet add package Newtonsoft.Json
+	Via Package Manager Console:
+	  Install-package Newtonsoft.Json

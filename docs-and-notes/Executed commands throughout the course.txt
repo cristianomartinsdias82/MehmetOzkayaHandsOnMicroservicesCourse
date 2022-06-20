@@ -1,11 +1,56 @@
-Executed commands stack (the oldest commands are at the bottom and then it goes coming up)
+Executed commands stack (new-to-old top-to-bottom sorting order)
+
+#20 (Basket.API-related -> Package Manager Console window) It updates all existing packages in the project!
+Update-Package -ProjectName Basket.API
+
+#19 (Redis-related) Redis CLI commands
+   redis-cli (initial command)
+   ping (check the server is up and running)
+   set [key] [value] (add a key-value pair to redis)
+     ex: set userId cristiano.dias
+   get [key] (retrieve a key-value pair from redis)
+     ex: get userId
+
+#18 (Docker-related) Interact to redis via terminal
+docker exec -it shopping-redis /bin/bash
+
+#17 (Docker-related) Log redis server for troubleshooting
+docker logs -f shopping-redis
+
+#16 (Docker-related) Run a Redis database in docker container
+docker run -d -p 6379:6379 --name shopping-redis redis
+
+#15 (Docker-related) Remove all unnamed images:
+  docker system prune
+
+#14 (Docker-related) Remove all images:
+  docker rmi $(docker images -q)
+
+#13 (Docker-related) Remove all running containers:
+  docker rm $(docker ps -aq)
+
+#12 (Docker-related) Stop all running containers:
+  docker stop $(docker ps -aq)
+
+#11 (Docker-related) Stop a docker composition:
+  Head to the folder where the docker-compose.yml is located then run:
+  docker-compose down
+
+#10 (Docker-related) Run a docker composition:
+  Head to the folder where the docker-compose.yml is located then run:
+  docker-compose -f docker-compose.yml -f docker-compose.override.yml up -d
+
+#9 (Docker-related) Stop a determined container:
+docker ps -a
+  With the container ID, use this command:
+docker stop 1234a [i.e. the containerID]
 
 #8 (Docker-related) Use this command to (re)start a docker container:
 docker ps -a 
-(and with the container ID, use this command:
-docker start 1234a [i.e. the containerID]
+  With the container ID, use this command:
+  docker start 1234a [i.e. the containerID]
 
-#7 (Catalog.API-related -> Package Manager Console window)
+#7 (Catalog.API-related -> Package Manager Console window) It updates all existing packages in the project!
 Update-Package -ProjectName Catalog.API
 
 #6 (Docker-related) EXTRA: Get further infrastructure details about the running container. Here's the command:
@@ -19,7 +64,7 @@ docker inspect shopping-mongo
    mongo (starts mongo shell for mongo-specific commands)
 	 use CatalogDb => creates a new database called CatalogDb
 	 show dbs => displays all currently available databases
-	 db.createCollection('Products') => (creates a new collection called 'Products' inside CatalogDb database
+	 db.createCollection('Products') => (creates a new collection called 'Products' inside CatalogDb database)
 	 show collections => displays all collections databases inside CatalogDb database. (If nothing is displayed, try 'use CatalogDb' [ENTER] then try again)
 	 db.Products.insertMany([{ "A": 1, "B":2, "N": 1000" }]) => inserts N documents into Products collection at once
 	 db.Products.find({}).pretty() => lists documents from Products collection (note that no filters were applied)

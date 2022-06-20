@@ -1,0 +1,23 @@
+#Issue 1 - After adding DockerCompose project to the solution and adjusting docker-compose.yml and docker-compose.override.yml files, I set the solution to use Docker Compose and hit F5
+to see if everything was working properly.
+When I tried to get data from data source, there was db-related timeout problem.
+In that moment, a set of db-connection-related parameters was missing in the appsettings.Development.json file and the ASPNETCORE_ENVIRONMENT environment variable was set to Development.
+The app automatically defaults to the sets of parameters located in the appsettings.json file. Although, the connection string was pointing to localhost:
+...,
+"DatabaseSettings": {
+    "DatabaseName": "CatalogDb",
+    "CollectionName": "Products",
+    "ConnectionString": "mongodb://LOCALHOST:27017" <<<<<<<<<<<
+}
+  
+When running in the composition, the connection string must point to CATALOGDB, actually (see container_name located at docker-compose.override.yml file).
+To overcome this problem, the following set of parameters was added to appsettings.Deveopment.json file:
+
+...,
+"DatabaseSettings": {
+    "DatabaseName": "CatalogDb",
+    "CollectionName": "Products",
+    "ConnectionString": "mongodb://CATALOGDB:27017"
+}
+
+..and voi la!

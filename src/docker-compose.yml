@@ -1,14 +1,24 @@
 version: '3.4'
 
 services:
-  handsoncatalog.db:
+  catalogdb:
     image: mongo
 
-  handsoncatalog.api:
-    image: ${DOCKER_REGISTRY-}handsoncatalogapi
+  catalog.api:
+    image: ${DOCKER_REGISTRY-}catalogapi
     build:
       context: .
       dockerfile: Services/Catalog/Catalog.API/Dockerfile
 
+  basketdb:
+    image: redis
+
+  basket.api:
+    image: ${DOCKER_REGISTRY-}basketapi
+    build:
+      context: .
+      dockerfile: Services/Basket/Basket.API/Dockerfile
+
 volumes:
   mongo_data:
+  redis_data:
