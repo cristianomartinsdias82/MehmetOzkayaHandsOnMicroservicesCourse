@@ -1,0 +1,17 @@
+USE POWERSHELL TO RUN THE COMMANDS BELOW!
+
+#1 (Docker-related) Stop a docker composition:
+  Head to the folder where the docker-compose.yml is located then run:
+  docker-compose down
+  
+#2 (Docker-related) Stop all running containers:
+docker stop $(docker ps -aq)
+
+#3 (Docker-related) Remove all running containers:
+docker rm $(docker ps -aq)
+
+#4 (Docker-related) Remove all images:
+docker rmi $(docker images -q)
+
+#5 (Docker-related) Remove all unnamed images:
+docker system prune

@@ -1,6 +1,16 @@
 version: '3.4'
 
 services:
+  portainer:
+    container_name: portainer
+    restart: always
+    ports:
+      - "8000:8000"
+      - "9000:9000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+
   catalogdb:
     container_name: catalogdb
     restart: always
@@ -17,10 +27,10 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - "DatabaseSettings:ConnectionString=mongodb://catalogdb:27017"
     ports:
-      - "8000:80"
+      - "8001:80"
  
   basketdb:
-    container_name: redisdb
+    container_name: basketdb
     restart: always
     ports:
       - "6379:6379"
@@ -29,8 +39,51 @@ services:
 
   basket.api:
     container_name: basket.api
+    depends_on:
+      - basketdb
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - "CachingSettings:ServerAddress=basketdb:6379"
     ports:
-      - "8001:80"
+      - "8002:80"
+
+  discountdb:
+    container_name: discountdb
+    restart: always
+    environment:
+      - POSTGRES_USER=admin1234
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=DiscountDb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+
+  discountdb.pgAdmin:
+    container_name: discountdb.pgAdmin
+    restart: always
+    depends_on:
+      - discountdb
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=admin1234
+    ports:
+      - "5050:80"
+    volumes:
+      - postgresadmin_data:/root/.pgadmin
+
+  discount.api:
+    container_name: discount.api
+    depends_on:
+      - discountdb
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "DatabaseSettings:Server=discountdb"
+      - "DatabaseSettings:Port=5432"
+      - "DatabaseSettings:DatabaseName=DiscountDb"
+      - "DatabaseSettings:SchemaOwner=public"
+      - "DatabaseSettings:TableName=Coupon"
+      - "DatabaseSettings:UserId=admin1234"
+      - "DatabaseSettings:Password=admin"
+    ports:
+      - "8003:80"

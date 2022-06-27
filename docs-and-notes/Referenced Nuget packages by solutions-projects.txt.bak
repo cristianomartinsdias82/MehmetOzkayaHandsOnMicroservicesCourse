@@ -56,7 +56,13 @@ Discount.Grpc - Asp.Net Core Grpc template
 	Via Package Manager Console:
 	  Install-package Dapper
 	  
- -> AutoMapper (AutoMapper.Extensions.Microsoft.DependencyInjection)
+ -> AutoMapper
+    Via CLI prompt command:
+	  dotnet add package AutoMapper
+	Via Package Manager Console:
+	  Install-package AutoMapper
+	  
+ -> AutoMapper.Extensions.Microsoft.DependencyInjection
     Via CLI prompt command:
 	  dotnet add package AutoMapper.Extensions.Microsoft.DependencyInjection
 	Via Package Manager Console:

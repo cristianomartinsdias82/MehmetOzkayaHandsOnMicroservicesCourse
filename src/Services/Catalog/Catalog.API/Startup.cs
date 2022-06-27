@@ -1,4 +1,3 @@
-using Catalog.API.Middlewares;
 using Catalog.API.Settings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

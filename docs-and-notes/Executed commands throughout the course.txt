@@ -1,4 +1,23 @@
-Executed commands stack (new-to-old top-to-bottom sorting order)
+Executed commands stack (recent-to-old top-to-bottom sorting order)
+
+#22 (Postgres-related) UUID generator component AND Coupon table DDL script:
+
+	public.coupon definition
+
+	-- Drop table
+	DROP TABLE public.coupon;
+
+	CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+	CREATE TABLE public.coupon (
+		id uuid NULL DEFAULT uuid_generate_v4(),
+		productname varchar(50) NOT NULL,
+		description varchar(256) NULL,
+		discount numeric(1000, 2) NULL
+	);
+
+#21 (Postgres-related) DiscountAPI database connection string:
+	Server=localhost;Port=5432;Database=DiscountDb;User Id=admin1234;Password=admin
 
 #20 (Basket.API-related -> Package Manager Console window) It updates all existing packages in the project!
 Update-Package -ProjectName Basket.API
@@ -21,16 +40,16 @@ docker logs -f shopping-redis
 docker run -d -p 6379:6379 --name shopping-redis redis
 
 #15 (Docker-related) Remove all unnamed images:
-  docker system prune
+docker system prune
 
 #14 (Docker-related) Remove all images:
-  docker rmi $(docker images -q)
+docker rmi $(docker images -q)
 
 #13 (Docker-related) Remove all running containers:
-  docker rm $(docker ps -aq)
+docker rm $(docker ps -aq)
 
 #12 (Docker-related) Stop all running containers:
-  docker stop $(docker ps -aq)
+docker stop $(docker ps -aq)
 
 #11 (Docker-related) Stop a docker composition:
   Head to the folder where the docker-compose.yml is located then run:
@@ -56,7 +75,7 @@ Update-Package -ProjectName Catalog.API
 #6 (Docker-related) EXTRA: Get further infrastructure details about the running container. Here's the command:
 docker inspect shopping-mongo
 
-#5 (MongoDb-related) MongoDB Compass connection string:
+#5 (MongoDb-related) Catalog API database connection string:
 	mongodb://localhost:27017/CatalogDb?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false
 
 #4 (MongoDb-related) Mongo CLI commands
