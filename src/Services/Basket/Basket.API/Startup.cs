@@ -24,10 +24,10 @@ namespace Basket.API
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Basket.API", Version = "v1" });
-            });
-
-            services.AddRedisCaching(Configuration);
-            services.AddRepositories(Configuration);
+            })
+            .AddRedisCaching(Configuration)
+            .AddRepositories(Configuration)
+            .AddServices(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

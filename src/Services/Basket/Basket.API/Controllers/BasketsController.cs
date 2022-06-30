@@ -1,8 +1,11 @@
 ﻿using Basket.API.Entities;
+using Basket.API.Integrations.DiscountServices;
 using Basket.API.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Linq;
 using System.Net.Mime;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,13 +19,16 @@ namespace Basket.API.Controllers
     {
         private readonly ILogger<BasketsController> _logger;
         private readonly IBasketRepository _basketRepository;
+        private readonly IDiscountServiceClient _discountService;
 
         public BasketsController(
             ILogger<BasketsController> logger,
-            IBasketRepository basketRepository)
+            IBasketRepository basketRepository,
+            IDiscountServiceClient discountService)
         {
-            _logger = logger;
-            _basketRepository = basketRepository;
+            _logger = logger ?? throw new ArgumentNullException($"Argument {logger} cannot be null.");
+            _basketRepository = basketRepository ?? throw new ArgumentNullException($"Argument {basketRepository} cannot be null.");
+            _discountService = discountService ?? throw new ArgumentNullException($"Argument {discountService} cannot be null.");
         }
 
         [HttpGet("{userName}", Name = "GetBasket")]
@@ -41,6 +47,8 @@ namespace Basket.API.Controllers
         public async Task<IActionResult> Post(ShoppingCart cart, CancellationToken cancellationToken)
         {
             LogInfo("Save basket method invoked...");
+
+            await _discountService.ApplyDiscountsAsync(cart, cancellationToken);
 
             var persistedCart = await _basketRepository.SaveBasket(cart, cancellationToken);
 

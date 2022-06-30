@@ -1,11 +1,16 @@
 Executed commands stack (recent-to-old top-to-bottom sorting order)
 
+#24 (Docker-related) Rebuild all images and run them from the beginning
+docker-compose up -d --build
+docker-compose up -f docker-compose.yml -f docker-compose.override.yml -d --build
+
+#23 (Docker-related) Run a Postgres database in docker container
+docker run -d -e POSTGRES_USER=admin1234 -e POSTGRES_PASSWORD=admin -e POSTGRES_DB=discountdb -p 5432:5432 --name discountdb postgres
+
 #22 (Postgres-related) UUID generator component AND Coupon table DDL script:
 
-	public.coupon definition
-
 	-- Drop table
-	DROP TABLE public.coupon;
+	DROP TABLE IF EXISTS Coupon;
 
 	CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
@@ -37,7 +42,7 @@ docker exec -it shopping-redis /bin/bash
 docker logs -f shopping-redis
 
 #16 (Docker-related) Run a Redis database in docker container
-docker run -d -p 6379:6379 --name shopping-redis redis
+docker run -d -p 6379:6379 --name shopping-redis redis:alpine
 
 #15 (Docker-related) Remove all unnamed images:
 docker system prune

@@ -9,5 +9,15 @@ namespace Basket.API.Entities
         public Guid ProductId { get; set; }
         public string ProductName { get; set; }
         public decimal Price { get; set; }
+        public decimal Discount { get; private set; }
+
+        public void ApplyDiscount(decimal discount)
+        {
+            if (!DiscountApplied)
+                Discount = discount;
+        }
+
+        public bool DiscountApplied
+            => Discount > 0M;
     }
 }

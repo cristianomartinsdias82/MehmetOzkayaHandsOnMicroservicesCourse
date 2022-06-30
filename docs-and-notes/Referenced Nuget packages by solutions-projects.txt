@@ -39,6 +39,10 @@ Discount.API - Asp.Net Core Web API template
 	  dotnet add package Dapper
 	Via Package Manager Console:
 	  Install-package Dapper
+	  
+ -> Grpc.AspNetCore
+    Added after creating Discount.Grpc service and Added its Service Reference via Wizard
+	(right click Discount.API, then select 'Connected Service', then select Discount.Grpc proto file path, the select Client Only creation option)
 
 Discount.Grpc - Asp.Net Core Grpc template
  -> Grpc.AspNetCore (Swagger tools)
@@ -61,6 +65,8 @@ Discount.Grpc - Asp.Net Core Grpc template
 	  dotnet add package AutoMapper.Extensions.Microsoft.DependencyInjection
 	Via Package Manager Console:
 	  Install-package AutoMapper.Extensions.Microsoft.DependencyInjection
+	  
+
 
 (Package Manager Console window) The commands below update all existing packages in their respective project:
 Update-Package -ProjectName Basket.API

@@ -1,5 +1,7 @@
 USE POWERSHELL TO RUN THE COMMANDS BELOW!
 
+A. Destroy all running containers and images manually
+
 #1 (Docker-related) Stop a docker composition:
   Head to the folder where the docker-compose.yml is located then run:
   docker-compose down
@@ -15,3 +17,8 @@ docker rmi $(docker images -q)
 
 #5 (Docker-related) Remove all unnamed images:
 docker system prune
+
+	OR
+
+B. Rebuild all images and run them from the beginning
+docker-compose up -d --build

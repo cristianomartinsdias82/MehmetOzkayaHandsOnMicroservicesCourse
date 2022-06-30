@@ -1,0 +1,10 @@
+Development and tests adopted IDEs
+
+Visual Studio 2019
+BloomRPC
+DBeaver
+OpenAPI Swagger
+Docker
+Another Redis Desktop Manager
+Robo 3T / MongoDb Compass
+Postman
