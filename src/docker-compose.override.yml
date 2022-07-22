@@ -41,11 +41,13 @@ services:
     container_name: basket.api
     depends_on:
       - basketdb
+      - orderingmessagebroker
       - discount.grpc
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - "CachingSettings:ServerAddress=basketdb:6379"
       - "DiscountApiIntegrationSettings:ServiceAddress=http://discount.grpc"
+      - "EventBusSettings:HostAddress=amqp://admin:admin1234@orderingmessagebroker"
     ports:
       - "8002:80"
 
@@ -105,3 +107,39 @@ services:
       - "DatabaseSettings:Password=admin"
     ports:
       - "8004:80"
+
+  orderingdb:
+    container_name: orderingdb
+    restart: always
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=yourStrong(!)Password
+      - MSSQL_PID=Express
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+
+  orderingmessagebroker:
+    container_name: orderingmessagebroker
+    restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin1234
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+     - rabbitmq_data:/var/opt/rabbitmq
+
+  ordering.api:
+    container_name: ordering.api
+    depends_on:
+      - orderingdb
+      - orderingmessagebroker
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ConnectionStrings:OrderingConnectionString=Server=orderingdb;Database=OrdersDb;User id=sa;Password=yourStrong(!)Password"
+      - "EventBusSettings:HostAddress=amqp://admin:admin1234@orderingmessagebroker"
+    ports:
+      - "8005:80"

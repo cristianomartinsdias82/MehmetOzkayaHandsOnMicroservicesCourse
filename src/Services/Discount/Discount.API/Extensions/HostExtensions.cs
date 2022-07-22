@@ -37,7 +37,7 @@ namespace Discount.API.Extensions
                 //    transaction: transaction);
 
                 //conn.Execute(
-                //    "CREATE EXTENSION IF NOT EXISTS \"uuid - ossp\";",
+                //    "CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";",
                 //    transaction: transaction);
 
                 conn.Execute(

@@ -27,7 +27,9 @@ namespace Basket.API
             })
             .AddRedisCaching(Configuration)
             .AddRepositories(Configuration)
-            .AddServices(Configuration);
+            .AddServices(Configuration)
+            .AddEventBus(Configuration)
+            .AddAutoMapper(typeof(Startup).Assembly);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

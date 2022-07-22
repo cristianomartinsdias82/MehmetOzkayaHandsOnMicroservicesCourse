@@ -1,11 +1,12 @@
 ﻿using Basket.API.Entities;
+using Basket.API.Integrations.CheckoutServices;
 using Basket.API.Integrations.DiscountServices;
 using Basket.API.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Solution.SharedKernel;
 using System;
-using System.Linq;
 using System.Net.Mime;
 using System.Threading;
 using System.Threading.Tasks;
@@ -64,6 +65,22 @@ namespace Basket.API.Controllers
             var removedCart = await _basketRepository.RemoveBasket(userName, cancellationToken);
 
             return StatusCode(StatusCodes.Status200OK, removedCart);
+        }
+
+        [HttpPost("[action]", Name = "Checkout")]
+        [ProducesResponseType(typeof(OperationResult), StatusCodes.Status202Accepted)]
+        [ProducesResponseType(typeof(OperationResult), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(OperationResult), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Checkout(
+            [FromServices]IBasketCheckoutService basketCheckoutService,
+            CheckoutBasket basket,
+            CancellationToken cancellationToken)
+        {
+            LogInfo("Basket checkout is in progress...");
+
+            var checkoutResult = await basketCheckoutService.CheckoutAsync(basket, cancellationToken);
+
+            return StatusCode(checkoutResult.Code, checkoutResult);
         }
 
         private void LogInfo(string info, params object[] args)

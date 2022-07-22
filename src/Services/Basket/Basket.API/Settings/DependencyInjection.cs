@@ -1,6 +1,8 @@
-﻿using Basket.API.Integrations.DiscountServices;
+﻿using Basket.API.Integrations.CheckoutServices;
+using Basket.API.Integrations.DiscountServices;
 using Basket.API.Repositories;
-//using Grpc.Net.Client;
+using EventBus.Messages.Settings;
+using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -37,6 +39,21 @@ namespace Basket.API.Settings
             services.AddSingleton(discountApiIntegrationSettings);
             services.AddGrpcClient<DiscountsServiceProtoClient>(config => { config.Address = new Uri(discountApiIntegrationSettings.ServiceAddress); });
             services.AddScoped<IDiscountServiceClient, DiscountServiceClient>();
+            services.AddScoped<IBasketCheckoutService, BasketCheckoutService>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddEventBus(this IServiceCollection services, IConfiguration configuration)
+        {
+            var eventBusSettings = configuration.GetSection(nameof(EventBusSettings)).Get<EventBusSettings>();
+            services.AddMassTransit(busConfig =>
+            {
+                busConfig.UsingRabbitMq((ctx, cfg) =>
+                {
+                    cfg.Host(eventBusSettings.HostAddress);
+                });
+            });
 
             return services;
         }
